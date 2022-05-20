@@ -1,0 +1,35 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8443/auth/realms/rendicontation/protocol/openid-connect/certs
+          issuer-uri: http://localhost:8443/auth/realms/rendicontation
+  application:
+    name: FakeStore-API
+  jpa:
+    database: POSTGRESQL
+    hibernate.ddl-auto: create-drop
+    show-sql: true
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: "postgres"
+    password: "010800"
+    driverClassName: org.postgresql.Driver
+
+server:
+  port: '8080'
+
+  #security:
+  #require-ssl: 'true'
+
+keycloak:
+  resource: fakestore-flutter
+
+logging:
+  level:
+    it:
+      frankladder: DEBUG
+    org:
+      springframework: INFO
