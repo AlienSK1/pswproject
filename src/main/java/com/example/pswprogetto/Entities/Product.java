@@ -8,8 +8,7 @@ import java.io.Serializable;
 @Data
 @Entity
 @Table(name = "product", schema = "products")
-public class Product implements Serializable {
-    private static final long serialVersionUID = 6843302791607583447L;
+public class Product{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id",nullable = false)
