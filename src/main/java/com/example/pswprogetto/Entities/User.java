@@ -1,5 +1,6 @@
 package com.example.pswprogetto.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -8,8 +9,8 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name="users", schema = "users")
-public class User  {
+@Table(name="utenti", schema = "utente")
+public class User  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,8 +20,8 @@ public class User  {
     private String firstname;
 
     @Basic
-    @Column(name = "secondname",nullable = false,length = 48)
-    private String secondname;
+    @Column(name = "lastname",nullable = false,length = 48)
+    private String lastname;
 
     @Basic
     @Column(name = "email", nullable = false, length = 100)
@@ -30,7 +31,10 @@ public class User  {
     @Column(name = "address", nullable = false, length = 100)
     private String address;
 
-    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
+    @OneToOne(mappedBy = "user")
+    @JsonIgnore
+    private Cart cart;
 }

@@ -7,10 +7,7 @@ import com.example.pswprogetto.Utils.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,12 +18,8 @@ public class ProductController {
     private ProductService productService;
 
     //create
-    @PostMapping
-    public ResponseEntity createProduct(String name, String code, double price){
-        Product p= new Product();
-        p.setCode(code);
-        p.setName(name);
-        p.setPrice(price);
+    @PostMapping(path = "/createProduct")
+    public ResponseEntity createProduct(@RequestBody Product p){
         try {
             productService.addProduct(p);
         } catch (ProductAlreadyExistException e) {
@@ -35,8 +28,10 @@ public class ProductController {
         return new ResponseEntity(new ResponseMessage("Prodotto inserito!"), HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping(path = "/allProducts")
     public List<Product> getAll(){
         return productService.getAll();
     }
+
+
 }

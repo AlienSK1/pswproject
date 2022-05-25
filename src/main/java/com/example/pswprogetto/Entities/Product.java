@@ -4,11 +4,12 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Entity
-@Table(name = "product", schema = "products")
-public class Product{
+@Table(name = "products", schema = "product")
+public class Product implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id",nullable = false)
@@ -26,5 +27,6 @@ public class Product{
     @Column(name="quantity", nullable = false)
     private int quantity;
 
-
+    @OneToMany(targetEntity = ProductInCart.class, mappedBy = "product", cascade = CascadeType.MERGE)
+    private List<ProductInCart> productInCart;
 }

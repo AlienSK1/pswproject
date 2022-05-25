@@ -2,7 +2,7 @@ package com.example.pswprogetto.Services;
 
 import com.example.pswprogetto.Entities.Product;
 import com.example.pswprogetto.Exceptions.ProductAlreadyExistException;
-import com.example.pswprogetto.Repositories.ProductRepositories;
+import com.example.pswprogetto.Repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,19 +17,19 @@ import java.util.List;
 @Service
 public class ProductService {
     @Autowired
-    private ProductRepositories productRepositories;
+    private ProductRepository productRepository;
 
     @Transactional
     public void addProduct(Product P) throws ProductAlreadyExistException {
-        if(productRepositories.existsById(P.getId())|| (productRepositories.findByName(P.getName()).contains(P.getName()) && productRepositories.findByCode(P.getCode()).contains(P.getCode())))
+        if(productRepository.existsByCode(P.getCode()))
             throw new ProductAlreadyExistException();
-        productRepositories.save(P);
+        productRepository.save(P);
     }
 
     @Transactional
     public List<Product> getALlProduct(int pageNumber, int pageSize, String orderBy){
         Pageable paging= PageRequest.of(pageNumber,pageSize, Sort.by(orderBy));
-        Page<Product> page = productRepositories.findAll(paging);
+        Page<Product> page = productRepository.findAll(paging);
         if(page.hasContent()){
             return page.toList();
         }
@@ -39,16 +39,16 @@ public class ProductService {
 
     @Transactional
     public List<Product> getAll(){
-        return productRepositories.findAll();
+        return productRepository.findAll();
     }
 
     @Transactional
     public List<Product> getProductByName(String name){
-        return productRepositories.findByName(name);
+        return productRepository.findByName(name);
     }
 
     @Transactional
-    public List<Product> getProductByCode(String code){
-        return productRepositories.findByCode(code);
+    public Product getProductByCode(String code){
+        return productRepository.findByCode(code);
     }
 }
