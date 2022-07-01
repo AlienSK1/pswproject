@@ -1,12 +1,23 @@
+keycloak:
+  realm: Busent
+  resource: busent-app
+  auth-server-url: http://localhost:8080
+  public-client: true
+  use-resource-role-mappings: true
+  security-constraints[0]:
+    authRoles[0]: users
+    securityCollections[0]:
+      patterns[0]: /users
+
 spring:
   security:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:8443/auth/realms/rendicontation/protocol/openid-connect/certs
-          issuer-uri: http://localhost:8443/auth/realms/rendicontation
+          issuer-uri: http://localhost:8080/realms/Busent
+          jwk-set-uri: http://localhost:8080/realms/Busent/protocol/openid-connect/certs
   application:
-    name: FakeStore-API
+    name: Busent
   jpa:
     database: POSTGRESQL
     hibernate.ddl-auto: create-drop
@@ -19,17 +30,9 @@ spring:
     driverClassName: org.postgresql.Driver
 
 server:
-  port: '8080'
+  port: '8081'
 
   #security:
   #require-ssl: 'true'
 
-keycloak:
-  resource: fakestore-flutter
 
-logging:
-  level:
-    it:
-      frankladder: DEBUG
-    org:
-      springframework: INFO

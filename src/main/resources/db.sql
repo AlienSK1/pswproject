@@ -1,11 +1,10 @@
 CREATE SCHEMA  product;
 CREATE SEQUENCE product.product_seq;
-
 CREATE TABLE product.products (
       id INTEGER DEFAULT NEXTVAL ('product.product_seq') PRIMARY KEY,
       name VARCHAR(50),
       bar_code VARCHAR(70),
-      price FLOAT,
+      price DOUBLE PRECISION,
       quantity INT
 );
 
@@ -24,7 +23,7 @@ Create SEQUENCE cart.cart_seq;
 Create TABLE cart.carts(
     id INTEGER DEFAULT nextval('cart.cart_seq') PRIMARY KEY ,
     utente INTEGER references utente.utenti(id),
-    totalprice DECIMAL
+    totalPrice DOUBLE PRECISION
 );
 
 CREATE  sequence cart.productInCart_seq;
@@ -41,5 +40,5 @@ CREATE TABLE ordine.ordini(
     id INTEGER DEFAULT nextval('ordine.ordini') PRIMARY KEY,
     utente INTEGER  references utente.utenti(id),
     data DATE,
-    totalprice DECIMAL
+    totalprice float8
 );
