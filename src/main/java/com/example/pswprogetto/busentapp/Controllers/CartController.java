@@ -20,14 +20,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/cart")
+@CrossOrigin(origins = "*")
 public class CartController {
     @Autowired
     private CartService cartService;
 
-    @PostMapping
-    public ResponseEntity addProductToCart(@Validated String productcode, String useremail, int quantity){
+    @PostMapping(path = "/addProductToCart")
+    public ResponseEntity addProductToCart(@RequestParam String productcode, @RequestParam String useremail, @RequestParam  String quantity){
         try{
-            cartService.addProductToCart(productcode,useremail,quantity);
+            cartService.addProductToCart(productcode,useremail,Integer.parseInt(quantity));
             return new ResponseEntity(new ResponseMessage("Prodotto aggiunto al carrello!"),HttpStatus.OK);
         }
         catch (ProductDoesntExistException e) {
@@ -40,9 +41,9 @@ public class CartController {
     }
 
     @GetMapping(path = "/productInCart")
-    public ResponseEntity getProductInCart(@RequestBody User u){
+    public ResponseEntity getProductInCart(@RequestParam String email){
         try{
-            List<Product> products =cartService.getProductInCart(u);
+            List<Product> products =cartService.getProductInCart(email);
             return  new ResponseEntity(products, HttpStatus.OK);
         } catch (CartDoesntExistException e) {
             return  new ResponseEntity(new ResponseMessage("Cart doesn't exist"), HttpStatus.BAD_REQUEST);
@@ -61,19 +62,21 @@ public class CartController {
         }
     }
     @GetMapping(path = "/totalPrice")
-    public ResponseEntity getTotalPrice(@RequestBody User u){
+    public ResponseEntity getTotalPrice(@RequestParam String email){
         try {
-            Double total = cartService.getTotalPrice(u);
+            Double total = cartService.getTotalPrice(email);
             return  new ResponseEntity(total, HttpStatus.OK);
         } catch (CartDoesntExistException e) {
             return  new ResponseEntity(new ResponseMessage("Cart doesn't exist"), HttpStatus.BAD_REQUEST);
+        } catch (UserDoesntExistException e) {
+            return new ResponseEntity(new ResponseMessage("User doesn't exist"), HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping(path = "/products")
-    public ResponseEntity getProductincart(@RequestBody User u){
+    public ResponseEntity getProductincart(@RequestParam String email){
         try{
-            List<ProductInCart> products =cartService.getProductincart(u);
+            List<ProductInCart> products =cartService.getProductincart(email);
             return  new ResponseEntity(products, HttpStatus.OK);
         } catch (CartDoesntExistException e) {
             return  new ResponseEntity(new ResponseMessage("Cart doesn't exist"), HttpStatus.BAD_REQUEST);

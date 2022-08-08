@@ -13,6 +13,7 @@ import java.io.Serializable;
 @Table(name = "productincart",schema = "cart")
 public class ProductInCart implements Serializable {
     @Id
+    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

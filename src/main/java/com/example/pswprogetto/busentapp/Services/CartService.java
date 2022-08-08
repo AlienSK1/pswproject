@@ -43,7 +43,6 @@ public class CartService {
             throw  new CartDoesntExistException();
         }
         Product p = productRepository.findByCode(productCode);
-
         User u = userRepository.findByEmail(userEmail);
         Cart c = cartRepository.findByUser(u);
         if(! productInCartRepository.existsByProductAndCart(p,c)){
@@ -69,6 +68,7 @@ public class CartService {
             List<ProductInCart> productInCart = cartRepository.getProductbyUser(u);
             productInCart.remove(pic);
             pic.setQuantity(pic.getQuantity()+quantity);
+            productInCartRepository.save(pic);
             productInCart.add(pic);
             c.setTotalPrice(c.getTotalPrice()+quantity*p.getPrice());
             c.setProductInCart(productInCart);
@@ -76,18 +76,25 @@ public class CartService {
         }
     }
 
-    public List<ProductInCart> getProductincart(@RequestBody User u) throws CartDoesntExistException, UserDoesntExistException {
-        if(!userRepository.existsByEmail(u.getEmail())){
+    public List<ProductInCart> getProductincart( String email) throws CartDoesntExistException, UserDoesntExistException {
+        if(!userRepository.existsByEmail(email)){
             throw new UserDoesntExistException();
         }
+        User u = userRepository.findByEmail(email);
         if(!cartRepository.existsByUser(u)){
             throw new CartDoesntExistException();
         }
-        return cartRepository.getProductbyUser(cartRepository.findByUser(u).getUser());
+
+        List<ProductInCart> ris = cartRepository.getProductbyUser(u);
+        return ris;
     }
 
     @Transactional
-    public double getTotalPrice(@RequestBody User u) throws CartDoesntExistException{
+    public double getTotalPrice( String email) throws CartDoesntExistException, UserDoesntExistException {
+        if(!userRepository.existsByEmail(email)){
+            throw new UserDoesntExistException();
+        }
+        User u = userRepository.findByEmail(email);
         if(!cartRepository.existsByUser(u)){
             throw new CartDoesntExistException();
         }
@@ -96,10 +103,11 @@ public class CartService {
     }
 
     @Transactional
-    public List<Product> getProductInCart(@RequestBody User u) throws CartDoesntExistException, UserDoesntExistException {
-        if(!userRepository.existsByEmail(u.getEmail())){
+    public List<Product> getProductInCart( String email) throws CartDoesntExistException, UserDoesntExistException {
+        if(!userRepository.existsByEmail(email)){
             throw new UserDoesntExistException();
         }
+        User u= userRepository.findByEmail(email);
         if(!cartRepository.existsByUser(u)){
             throw new CartDoesntExistException();
         }
@@ -112,7 +120,7 @@ public class CartService {
     }
 
     @Transactional
-    public Cart getCart(@RequestBody User u) throws CartDoesntExistException {
+    public Cart getCart( User u) throws CartDoesntExistException {
         User user = userRepository.findByEmail(u.getEmail());
         if(!cartRepository.existsByUser(user)){
             throw new CartDoesntExistException();

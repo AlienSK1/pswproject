@@ -48,6 +48,9 @@ public class ProductService {
     }
 
     @Transactional
+    public List<Product> getProductThatContains(String name){ return  productRepository.findByNameContaining(name);}
+
+    @Transactional
     public Product getProductByCode(String code){
         return productRepository.findByCode(code);
     }

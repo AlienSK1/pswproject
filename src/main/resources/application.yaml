@@ -20,8 +20,11 @@ spring:
     name: Busent
   jpa:
     database: POSTGRESQL
-    hibernate.ddl-auto: create-drop
+    hibernate.ddl-auto: update
     show-sql: true
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
   datasource:
     platform: postgres
     url: jdbc:postgresql://localhost:5432/postgres
@@ -30,7 +33,7 @@ spring:
     driverClassName: org.postgresql.Driver
 
 server:
-  port: '8081'
+  port: '8082'
 
   #security:
   #require-ssl: 'true'

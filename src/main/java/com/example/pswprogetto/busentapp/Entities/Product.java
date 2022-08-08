@@ -14,6 +14,7 @@ import java.util.List;
 public class Product implements Serializable{
     @Id
     @ToString.Exclude
+    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id",nullable = false)
     private Long id;
@@ -30,8 +31,12 @@ public class Product implements Serializable{
     @Column(name="quantity", nullable = false)
     private int quantity;
 
+    @Column(name="image", nullable = false)
+    private String image;
+
     @OneToMany(targetEntity = ProductInCart.class, mappedBy = "product", cascade = CascadeType.MERGE)
     @ToString.Exclude
     @JsonIgnore
     private List<ProductInCart> productInCart;
+
 }

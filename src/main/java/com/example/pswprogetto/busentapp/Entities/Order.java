@@ -1,5 +1,6 @@
 package com.example.pswprogetto.busentapp.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -16,13 +17,14 @@ public class Order implements Serializable {
     private Long id;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "utente")
     private User user;
 
     @Column(name = "data", nullable = false)
     private Date date;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany()
     private List<Product> productordered;
 
     @Column(name = "totalprice", nullable = true)

@@ -5,7 +5,8 @@ CREATE TABLE product.products (
       name VARCHAR(50),
       bar_code VARCHAR(70),
       price DOUBLE PRECISION,
-      quantity INT
+      quantity INT,
+      image varchar
 );
 
 CREATE SCHEMA utente;
@@ -14,6 +15,7 @@ CREATE TABLE utente.utenti (
     id INTEGER DEFAULT  nextval('utente.user_seq') PRIMARY KEY,
     firstname varchar(50),
     lastname varchar(50),
+    username varchar(50),
     email varchar(100),
     address varchar(100)
 );
@@ -37,7 +39,7 @@ CREATE TABLE cart.productincart(
 CREATE SCHEMA ordine;
 CREATE SEQUENCE ordine.order_seq;
 CREATE TABLE ordine.ordini(
-    id INTEGER DEFAULT nextval('ordine.ordini') PRIMARY KEY,
+    id INTEGER DEFAULT nextval('ordine.order_seq') PRIMARY KEY,
     utente INTEGER  references utente.utenti(id),
     data DATE,
     totalprice float8

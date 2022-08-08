@@ -15,6 +15,7 @@ import java.util.List;
 public class User  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
 
     @Basic
@@ -24,6 +25,10 @@ public class User  implements Serializable {
     @Basic
     @Column(name = "lastname",nullable = false,length = 48)
     private String lastname;
+
+    @Basic
+    @Column(name = "username", nullable = false, length = 100)
+    private String username;
 
     @Basic
     @Column(name = "email", nullable = false, length = 100)

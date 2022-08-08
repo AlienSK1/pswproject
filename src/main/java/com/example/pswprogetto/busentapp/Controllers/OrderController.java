@@ -16,12 +16,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/Orders")
+@RequestMapping(path = "/orders")
+@CrossOrigin(origins = "*")
 public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @PostMapping
+    @PostMapping(path = "/addOrder")
     public ResponseEntity addOrder(@RequestBody User u){
         try{
             orderService.addOrder(u);
@@ -37,8 +38,8 @@ public class OrderController {
         }
     }
 
-    @GetMapping
-    public List<Order> getAllOrder(@RequestBody User u) throws UserDoesntExistException{
-        return orderService.getOrders(u);
+    @GetMapping(path="/getOrders")
+    public List<Order> getAllOrder(@RequestParam String email) throws UserDoesntExistException{
+        return orderService.getOrders(email);
     }
 }

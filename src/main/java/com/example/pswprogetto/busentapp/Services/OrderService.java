@@ -44,8 +44,8 @@ public class OrderService {
         }
         Cart cart = cartRepository.findByUser(user);
         Order order = new Order();
-        order.setDate(new Date());
-        order.setUser(userRepository.findByEmail(u.getEmail()));
+        order.setDate(new Date( System.currentTimeMillis()));
+        order.setUser(userRepository.findByEmail(user.getEmail()));
         List<ProductInCart> productInCart = cartRepository.getProductbyUser(user);
         List<Product>  productsordered = new ArrayList<>();
         for(ProductInCart product: productInCart){
@@ -74,11 +74,11 @@ public class OrderService {
 
     @Transactional
     @Transient
-    public List<Order> getOrders(@NotNull User u) throws UserDoesntExistException{
-        if(!userRepository.existsByEmail(u.getEmail())){
+    public List<Order> getOrders(@NotNull String email) throws UserDoesntExistException{
+        if(!userRepository.existsByEmail(email)){
             throw new UserDoesntExistException();
         }
-        User user = userRepository.findByEmail(u.getEmail());
+        User user = userRepository.findByEmail(email);
         return orderRepository.findByUser(user);
     }
 }

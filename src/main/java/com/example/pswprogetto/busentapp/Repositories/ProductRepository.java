@@ -2,6 +2,7 @@ package com.example.pswprogetto.busentapp.Repositories;
 
 import com.example.pswprogetto.busentapp.Entities.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -10,9 +11,8 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByName(String name);
-    List<Product> findByPrice(double price);
+    @Query("select p from Product p where upper(p.name) like upper(concat('%',?1,'%'))")
+    List<Product> findByNameContaining(String name);
     Product findByCode(String code);
     boolean existsByCode(String code);
-    boolean existsByName(String name);
-
 }

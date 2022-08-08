@@ -5,14 +5,17 @@ import com.example.pswprogetto.busentapp.Exceptions.ProductAlreadyExistException
 import com.example.pswprogetto.busentapp.Services.ProductService;
 import com.example.pswprogetto.busentapp.Utils.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping(path="/product")
+@CrossOrigin(origins = "*")
 public class ProductController {
     @Autowired
     private ProductService productService;
@@ -33,5 +36,9 @@ public class ProductController {
         return productService.getAll();
     }
 
+    @GetMapping(path = "/containing")
+    public List<Product> getContainingInName(@Param("name") String name){
+        return productService.getProductThatContains(name);
+    }
 
 }

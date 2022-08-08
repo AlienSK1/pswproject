@@ -10,6 +10,7 @@ import org.keycloak.KeycloakSecurityContext;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.keycloak.representations.AccessToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -19,16 +20,18 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/users")
+@RequestMapping(path = "/utenti")
+@CrossOrigin(origins = "*")
 public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
     private HttpServletRequest request;
 
-    @PostMapping
-    public ResponseEntity registerUser(){
+    @PostMapping(path="/registra")
+    public ResponseEntity registerUser(@RequestBody User u){
         try{
+            /*System.out.println("Arrivato utente");
             KeycloakAuthenticationToken token = (KeycloakAuthenticationToken) request.getUserPrincipal();
             KeycloakPrincipal principal=(KeycloakPrincipal)token.getPrincipal();
             KeycloakSecurityContext session = principal.getKeycloakSecurityContext();
@@ -37,7 +40,8 @@ public class UserController {
             u.setEmail(accessToken.getEmail());
             u.setFirstname(accessToken.getGivenName());
             u.setLastname(accessToken.getFamilyName());
-            u.setAddress("pippo e topolino");
+            u.setAddress(address);
+            */
             userService.registerUser(u);
             return new ResponseEntity(new ResponseMessage("Utente registrato!"),HttpStatus.OK);
         }
@@ -52,8 +56,8 @@ public class UserController {
         return  new ResponseEntity(users, HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity getByEmail(@RequestBody String email){
+    @GetMapping(path="/getUser")
+    public ResponseEntity getByEmail(@Validated String email){
         try {
             User u = userService.getByEmail(email);
             return new ResponseEntity(u,HttpStatus.OK);

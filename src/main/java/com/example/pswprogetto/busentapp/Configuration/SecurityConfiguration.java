@@ -15,7 +15,11 @@ import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import java.util.Arrays;
 
 
 @EnableWebSecurity
@@ -24,12 +28,12 @@ public class SecurityConfiguration extends KeycloakWebSecurityConfigurerAdapter 
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         super.configure(http);
-        http.authorizeRequests().anyRequest().authenticated();
+        http.authorizeRequests().antMatchers("/utenti/*").authenticated().antMatchers("/product/**").permitAll().antMatchers("/cart/**").authenticated().antMatchers("/orders/**").authenticated();
         http.csrf().disable();
     }
-
+//.authenticated().antMatchers("/product/containing").authenticated().antMatchers("/product/createProduct")
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) { //4
+    public void configureGlobal(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(getKeycloakAuthenticationProvider());
     }
 
@@ -52,4 +56,5 @@ public class SecurityConfiguration extends KeycloakWebSecurityConfigurerAdapter 
     public KeycloakConfigResolver KeycloakConfigResolver() {
         return new KeycloakSpringBootConfigResolver();
     }
+
 }
