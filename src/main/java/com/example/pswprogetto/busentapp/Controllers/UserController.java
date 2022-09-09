@@ -25,23 +25,9 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
-    @Autowired
-    private HttpServletRequest request;
-
     @PostMapping(path="/registra")
     public ResponseEntity registerUser(@RequestBody User u){
         try{
-            /*System.out.println("Arrivato utente");
-            KeycloakAuthenticationToken token = (KeycloakAuthenticationToken) request.getUserPrincipal();
-            KeycloakPrincipal principal=(KeycloakPrincipal)token.getPrincipal();
-            KeycloakSecurityContext session = principal.getKeycloakSecurityContext();
-            AccessToken accessToken = session.getToken();
-            User u = new User();
-            u.setEmail(accessToken.getEmail());
-            u.setFirstname(accessToken.getGivenName());
-            u.setLastname(accessToken.getFamilyName());
-            u.setAddress(address);
-            */
             userService.registerUser(u);
             return new ResponseEntity(new ResponseMessage("Utente registrato!"),HttpStatus.OK);
         }

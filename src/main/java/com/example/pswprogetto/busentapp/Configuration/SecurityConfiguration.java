@@ -31,7 +31,6 @@ public class SecurityConfiguration extends KeycloakWebSecurityConfigurerAdapter 
         http.authorizeRequests().antMatchers("/utenti/*").authenticated().antMatchers("/product/**").permitAll().antMatchers("/cart/**").authenticated().antMatchers("/orders/**").authenticated();
         http.csrf().disable();
     }
-//.authenticated().antMatchers("/product/containing").authenticated().antMatchers("/product/createProduct")
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(getKeycloakAuthenticationProvider());

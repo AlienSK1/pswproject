@@ -58,7 +58,6 @@ public class CartService {
             productInCart.add(pic);
             c.setTotalPrice(c.getTotalPrice()+quantity*p.getPrice());
             c.setProductInCart(productInCart);
-            cartRepository.save(c);
         }
         else{
             ProductInCart pic= productInCartRepository.findByProductAndCart(p,c);
@@ -72,8 +71,8 @@ public class CartService {
             productInCart.add(pic);
             c.setTotalPrice(c.getTotalPrice()+quantity*p.getPrice());
             c.setProductInCart(productInCart);
-            cartRepository.save(c);
         }
+        cartRepository.save(c);
     }
 
     public List<ProductInCart> getProductincart( String email) throws CartDoesntExistException, UserDoesntExistException {
