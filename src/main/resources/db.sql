@@ -44,3 +44,11 @@ CREATE TABLE ordine.ordini(
     data DATE,
     totalprice float8
 );
+
+CREATE SEQUENCE ordine.prodottiOrdinati_seq;
+CREATE TABLE ordine.prodottiOrdinati(
+    id INTEGER DEFAULT nextval('ordine.prodottiOrdinati_seq') PRIMARY KEY,
+    ordine INTEGER REFERENCES ordine.ordini(id),
+    productOrdered  INTEGER references product.products(id),
+    quantity INTEGER
+);

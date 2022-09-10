@@ -27,6 +27,8 @@ public class OrderService {
     @Autowired
     private ProductInCartRepository productInCartRepository;
     @Autowired
+    private ProductInOrderRepository productInOrderRepository;
+    @Autowired
     private UserRepository userRepository;
     @Autowired
     private ProductRepository productRepository;
@@ -47,7 +49,7 @@ public class OrderService {
         order.setDate(new Date( System.currentTimeMillis()));
         order.setUser(userRepository.findByEmail(user.getEmail()));
         List<ProductInCart> productInCart = cartRepository.getProductbyUser(user);
-        List<Product>  productsordered = new ArrayList<>();
+        List<ProductInOrder>  productsOrdered = new ArrayList<>();
         for(ProductInCart product: productInCart){
             Product p = productRepository.findByCode(product.getProduct().getCode());
             if(product.getQuantity()>p.getQuantity()){
@@ -60,11 +62,15 @@ public class OrderService {
                 products.remove(product);
                 p.setProductInCart(products);
                 productRepository.save(p);
-                productsordered.add(p);
                 productInCartRepository.delete(product);
+                ProductInOrder productOrdered = new ProductInOrder();
+                productOrdered.setProductOrdered(p);
+                productOrdered.setQuantity(product.getQuantity());
+                productOrdered.setOrdine(order);
+                productInOrderRepository.save(productOrdered);
             }
         }
-        order.setProductordered(productsordered);
+        order.setProductordered(productsOrdered);
         order.setTotalprice(cart.getTotalPrice());
         orderRepository.save(order);
         cart.setProductInCart(new ArrayList<ProductInCart>());

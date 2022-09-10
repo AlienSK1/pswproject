@@ -24,8 +24,8 @@ public class Order implements Serializable {
     @Column(name = "data", nullable = false)
     private Date date;
 
-    @ManyToMany()
-    private List<Product> productordered;
+    @OneToMany(mappedBy = "ordine",cascade = CascadeType.MERGE)
+    private List<ProductInOrder> productordered;
 
     @Column(name = "totalprice", nullable = true)
     private double totalprice;

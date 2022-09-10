@@ -15,6 +15,4 @@ public interface ProductInCartRepository extends JpaRepository<ProductInCart,Lon
     boolean existsByCart(Cart c);
     ProductInCart findByProductAndCart(Product p, Cart c);
     boolean existsByProductAndCart(Product p, Cart c);
-    List<ProductInCart> findByProduct(Product p);
-    boolean existsByProduct(Product p);
 }
