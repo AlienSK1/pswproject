@@ -24,7 +24,6 @@ import java.util.Arrays;
 
 @EnableWebSecurity
 public class SecurityConfiguration extends KeycloakWebSecurityConfigurerAdapter {
-
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         super.configure(http);
@@ -41,7 +40,6 @@ public class SecurityConfiguration extends KeycloakWebSecurityConfigurerAdapter 
         var mapper = new SimpleAuthorityMapper();
         mapper.setConvertToUpperCase(true);
         authenticationProvider.setGrantedAuthoritiesMapper(mapper);
-
         return authenticationProvider;
     }
 

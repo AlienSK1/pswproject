@@ -39,7 +39,7 @@ public class CartController {
         }
     }
 
-    @GetMapping(path = "/productInCart")
+    @GetMapping(path = "/product")
     public ResponseEntity getProductInCart(@RequestParam String email){
         try{
             List<Product> products =cartService.getProductInCart(email);
@@ -72,7 +72,7 @@ public class CartController {
         }
     }
 
-    @GetMapping(path = "/products")
+    @GetMapping(path = "/productInCart")
     public ResponseEntity getProductincart(@RequestParam String email){
         try{
             List<ProductInCart> products =cartService.getProductincart(email);

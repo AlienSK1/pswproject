@@ -8,7 +8,6 @@ keycloak:
     authRoles[0]: users
     securityCollections[0]:
       patterns[0]: /users
-
 spring:
   security:
     oauth2:

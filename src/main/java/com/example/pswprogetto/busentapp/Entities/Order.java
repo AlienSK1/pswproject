@@ -19,12 +19,11 @@ public class Order implements Serializable {
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "utente")
-    private User user;
-
+    private User utente;
     @Column(name = "data", nullable = false)
     private Date date;
 
-    @OneToMany(mappedBy = "ordine",cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "ordine",cascade = CascadeType.ALL)
     private List<ProductInOrder> productordered;
 
     @Column(name = "totalprice", nullable = true)

@@ -47,11 +47,11 @@ public class OrderService {
         Cart cart = cartRepository.findByUser(user);
         Order order = new Order();
         order.setDate(new Date( System.currentTimeMillis()));
-        order.setUser(userRepository.findByEmail(user.getEmail()));
-        List<ProductInCart> productInCart = cartRepository.getProductbyUser(user);
+        order.setUtente(userRepository.findByEmail(user.getEmail()));
+        orderRepository.save(order);
         List<ProductInOrder>  productsOrdered = new ArrayList<>();
-        for(ProductInCart product: productInCart){
-            Product p = productRepository.findByCode(product.getProduct().getCode());
+        for(ProductInCart product: productInCartRepository.findByCart(cart)){
+            Product p = productInCartRepository.findByProductInCart(product);
             if(product.getQuantity()>p.getQuantity()){
                 throw new QuantityUnaviableException();
             }
@@ -73,7 +73,7 @@ public class OrderService {
         order.setProductordered(productsOrdered);
         order.setTotalprice(cart.getTotalPrice());
         orderRepository.save(order);
-        cart.setProductInCart(new ArrayList<ProductInCart>());
+        cart.setProductInCart(new ArrayList<>());
         cart.setTotalPrice(0.0);
         cartRepository.save(cart);
     }
@@ -85,6 +85,6 @@ public class OrderService {
             throw new UserDoesntExistException();
         }
         User user = userRepository.findByEmail(email);
-        return orderRepository.findByUser(user);
+        return orderRepository.findByUtente(user);
     }
 }

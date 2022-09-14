@@ -39,7 +39,7 @@ public class Product implements Serializable{
     @JsonIgnore
     private List<ProductInCart> productInCart;
 
-    @OneToMany(targetEntity = ProductInOrder.class,mappedBy = "productOrdered", cascade = CascadeType.MERGE)
+    @OneToMany(targetEntity = ProductInOrder.class,mappedBy = "productOrdered", cascade = CascadeType.ALL)
     @ToString.Exclude
     @JsonIgnore
     private List<ProductInOrder> productInOrder;

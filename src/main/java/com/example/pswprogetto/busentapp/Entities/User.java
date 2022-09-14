@@ -38,7 +38,7 @@ public class User  implements Serializable {
     @Column(name = "address", nullable = false, length = 100)
     private String address;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "utente", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Order> orders;
 
