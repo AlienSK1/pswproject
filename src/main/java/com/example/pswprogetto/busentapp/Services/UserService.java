@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 @Service
@@ -18,26 +19,28 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private CartRepository cartRepository;
+    @Autowired
+    private EntityManager entityManager;
 
     @Transactional
     public void registerUser(User u) throws UserEmailAlreadyExistException {
         String email= u.getEmail();
         if(userRepository.existsByEmail(email))
             throw new UserEmailAlreadyExistException();
-        userRepository.save(u);
+        entityManager.persist(u);
         Cart c = new Cart();
         c.setUser(u);
         cartRepository.save(c);
+        u.setCart(c);
+        userRepository.save(u);
     }
-
-    @Transactional
+    @Transactional(readOnly = true)
     public User getByEmail(String email) throws UserDoesntExistException {
         if(!userRepository.existsByEmail(email)){
             throw new UserDoesntExistException();
         }
         return userRepository.findByEmail(email);
     }
-
-    @Transactional
+    @Transactional(readOnly = true)
     public List<User> getAllUsers(){ return userRepository.findAll();}
 }

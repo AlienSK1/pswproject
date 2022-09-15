@@ -1,6 +1,5 @@
 package com.example.pswprogetto.busentapp.Configuration;
 
-
 import org.keycloak.adapters.KeycloakConfigResolver;
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
@@ -21,7 +20,6 @@ import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 
-
 @EnableWebSecurity
 public class SecurityConfiguration extends KeycloakWebSecurityConfigurerAdapter {
     @Override
@@ -34,7 +32,6 @@ public class SecurityConfiguration extends KeycloakWebSecurityConfigurerAdapter 
     public void configureGlobal(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(getKeycloakAuthenticationProvider());
     }
-
     private AuthenticationProvider getKeycloakAuthenticationProvider() {
         KeycloakAuthenticationProvider authenticationProvider = keycloakAuthenticationProvider();
         var mapper = new SimpleAuthorityMapper();
@@ -42,13 +39,11 @@ public class SecurityConfiguration extends KeycloakWebSecurityConfigurerAdapter 
         authenticationProvider.setGrantedAuthoritiesMapper(mapper);
         return authenticationProvider;
     }
-
     @Override
     @Bean
     protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
         return  new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
     }
-
     @Bean
     public KeycloakConfigResolver KeycloakConfigResolver() {
         return new KeycloakSpringBootConfigResolver();

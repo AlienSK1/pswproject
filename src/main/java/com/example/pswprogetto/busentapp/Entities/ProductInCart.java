@@ -16,16 +16,13 @@ public class ProductInCart implements Serializable {
     @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @ManyToOne()
     @JoinColumn(name = "cart")
     @JsonIgnore
     private Cart cart;
-
     @ManyToOne
     @JoinColumn(name = "product")
     private Product product;
-    
     @Basic
     @Column(name = "quantity")
     private Integer quantity;

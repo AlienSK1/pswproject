@@ -31,8 +31,6 @@ public class CartService {
     private ProductInCartRepository productInCartRepository;
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private EntityManager entityManager;
 
     @Transactional
     public void addProductToCart(String productCode, String userEmail, int quantity) throws CartDoesntExistException, QuantityUnaviableException, ProductDoesntExistException {
@@ -74,7 +72,7 @@ public class CartService {
         }
         cartRepository.save(c);
     }
-
+    @Transactional(readOnly = true)
     public List<ProductInCart> getProductincart( String email) throws CartDoesntExistException, UserDoesntExistException {
         if(!userRepository.existsByEmail(email)){
             throw new UserDoesntExistException();
@@ -88,7 +86,7 @@ public class CartService {
         return ris;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public double getTotalPrice( String email) throws CartDoesntExistException, UserDoesntExistException {
         if(!userRepository.existsByEmail(email)){
             throw new UserDoesntExistException();
@@ -101,7 +99,7 @@ public class CartService {
         return c.getTotalPrice();
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Product> getProductInCart( String email) throws CartDoesntExistException, UserDoesntExistException {
         if(!userRepository.existsByEmail(email)){
             throw new UserDoesntExistException();
@@ -118,7 +116,7 @@ public class CartService {
         return ret;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Cart getCart( User u) throws CartDoesntExistException {
         User user = userRepository.findByEmail(u.getEmail());
         if(!cartRepository.existsByUser(user)){

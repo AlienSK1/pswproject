@@ -15,17 +15,14 @@ public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "utente")
     private User utente;
     @Column(name = "data", nullable = false)
     private Date date;
-
     @OneToMany(mappedBy = "ordine",cascade = CascadeType.ALL)
     private List<ProductInOrder> productordered;
-
     @Column(name = "totalprice", nullable = true)
     private double totalprice;
 

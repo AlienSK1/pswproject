@@ -18,40 +18,16 @@ import java.util.List;
 public class ProductService {
     @Autowired
     private ProductRepository productRepository;
-
     @Transactional
-    public void addProduct(Product P) throws ProductAlreadyExistException {
-        if(productRepository.existsByCode(P.getCode()))
+    public void addProduct(Product p) throws ProductAlreadyExistException {
+        if(productRepository.existsByCode(p.getCode()))
             throw new ProductAlreadyExistException();
-        productRepository.save(P);
+        productRepository.save(p);
     }
-
-    @Transactional
-    public List<Product> getALlProduct(int pageNumber, int pageSize, String orderBy){
-        Pageable paging= PageRequest.of(pageNumber,pageSize, Sort.by(orderBy));
-        Page<Product> page = productRepository.findAll(paging);
-        if(page.hasContent()){
-            return page.toList();
-        }
-        return new ArrayList<Product>();
-
-    }
-
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Product> getAll(){
         return productRepository.findAll();
     }
-
-    @Transactional
-    public List<Product> getProductByName(String name){
-        return productRepository.findByName(name);
-    }
-
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Product> getProductThatContains(String name){ return  productRepository.findByNameContaining(name);}
-
-    @Transactional
-    public Product getProductByCode(String code){
-        return productRepository.findByCode(code);
-    }
 }

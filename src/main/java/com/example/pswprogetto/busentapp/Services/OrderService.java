@@ -35,7 +35,7 @@ public class OrderService {
     @Autowired
     private EntityManager entityManager;
 
-    @Transactional
+    @Transactional(rollbackFor = QuantityUnaviableException.class)
     public void addOrder(User u)throws UserDoesntExistException, QuantityUnaviableException, CartDoesntExistException, ProductInCartDoesntExistException {
         if(!userRepository.existsByEmail(u.getEmail())){
             throw new UserDoesntExistException();
@@ -48,7 +48,7 @@ public class OrderService {
         Order order = new Order();
         order.setDate(new Date( System.currentTimeMillis()));
         order.setUtente(userRepository.findByEmail(user.getEmail()));
-        orderRepository.save(order);
+        entityManager.persist(order);
         List<ProductInOrder>  productsOrdered = new ArrayList<>();
         for(ProductInCart product: productInCartRepository.findByCart(cart)){
             Product p = productInCartRepository.findByProductInCart(product);
@@ -56,7 +56,7 @@ public class OrderService {
                 throw new QuantityUnaviableException();
             }
             else{
-                int quantity= p.getQuantity()- product.getQuantity();
+                int quantity= p.getQuantity()-product.getQuantity();
                 p.setQuantity(quantity);
                 List<ProductInCart> products= p.getProductInCart();
                 products.remove(product);
@@ -78,7 +78,7 @@ public class OrderService {
         cartRepository.save(cart);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Transient
     public List<Order> getOrders(@NotNull String email) throws UserDoesntExistException{
         if(!userRepository.existsByEmail(email)){

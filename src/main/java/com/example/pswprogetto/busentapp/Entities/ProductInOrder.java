@@ -15,7 +15,6 @@ public class ProductInOrder {
     @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @ManyToOne()
     @JsonIgnore
     @JoinColumn(name="ordine")
@@ -23,7 +22,6 @@ public class ProductInOrder {
     @ManyToOne()
     @JoinColumn(name="productOrdered")
     private Product productOrdered;
-
     @Column(name="quantity")
     private int quantity;
 }
